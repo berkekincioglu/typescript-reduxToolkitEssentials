@@ -21,7 +21,8 @@ const ReactionButton = ({ post }: PostState | any) => {
           dispatch(reactionAdded({ postId: post.id, reaction: name }))
         }
       >
-        {emoji} {post.reactions[name]}
+        {emoji}
+        <span style={{ margin: '0 20px' }}>{post.reactions[name]}</span>
       </button>
     );
   });

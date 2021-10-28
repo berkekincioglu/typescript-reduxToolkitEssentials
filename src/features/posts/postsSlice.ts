@@ -18,6 +18,11 @@ export interface PostState {
   reactions: any;
 }
 
+interface ReactionPayload {
+  postId: string;
+  reaction: string;
+}
+
 const initialState: PostState[] = [
   {
     id: '1',
@@ -49,7 +54,7 @@ export const postsSlice = createSlice({
         existingPost.content = content;
       }
     },
-    reactionAdded: (state, action) => {
+    reactionAdded: (state, action: PayloadAction<ReactionPayload>) => {
       const { postId, reaction } = action.payload;
       const existingPost = state.find((post) => post.id === postId);
       if (existingPost) {
