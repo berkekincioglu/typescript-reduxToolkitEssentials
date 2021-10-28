@@ -1,24 +1,28 @@
 import React, { useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { postUpdated } from './postsSlice';
+import { PostState, postUpdated } from './postsSlice';
+
+interface ParamsType {
+  postId: string;
+}
 
 const EditPostForm = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
+  const { postId } = useParams<ParamsType>();
 
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const post: PostState | any = useAppSelector((state) =>
+    state.posts.find((post) => post.id === postId)
+  );
+
+  const [title, setTitle] = useState(post.title);
+  const [content, setContent] = useState(post.content);
 
   const onTitleChanged = (e: React.FormEvent<HTMLInputElement>) =>
     setTitle(e.currentTarget.value);
   const onContentChanged = (e: React.FormEvent<HTMLTextAreaElement>): void =>
     setContent(e.currentTarget.value);
-
-  const { postId }: any = useParams();
-  const post = useAppSelector((state) =>
-    state.posts.find((post) => post.id === postId)
-  );
 
   const onSavePostClicked = () => {
     if (title && content) {
