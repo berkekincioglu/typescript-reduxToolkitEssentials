@@ -2,15 +2,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../app/hooks';
 import { StyleSheet } from '../../utils/StyleSheet';
+import PostAuthor from './PostAuthor';
 import { postsSelector } from './postsSlice';
+import ReactionButton from './ReactionButton';
+import TimeAgo from './TimeAgo';
 
 const PostsList = () => {
   const posts = useAppSelector(postsSelector);
-  const users = useAppSelector((state) => state.users);
 
-  const renderedPosts = posts.map((post) => {
-    const user = users.find((user) => user.id === post.user);
-    console.log(user);
+  const orderedPosts = posts
+    .slice()
+    .sort((a, b) => b.date.localeCompare(a.date));
+  const renderedPosts = orderedPosts.map((post) => {
     return (
       <article
         key={post.id}
@@ -19,8 +22,10 @@ const PostsList = () => {
         <h3>{post.title}</h3>
         <p>{post.content}</p>
         <h6>{post.id}</h6>
-        <h2>{user && user.name}</h2>
+        <PostAuthor userId={post.user} />
+        <TimeAgo timeStamp={post.date} />
         <Link to={`/posts/${post.id}`}>View Post</Link>
+        <ReactionButton post={post} />
       </article>
     );
   });
