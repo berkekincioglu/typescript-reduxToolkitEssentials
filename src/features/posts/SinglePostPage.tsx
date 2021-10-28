@@ -4,6 +4,8 @@ import { RouteComponentProps } from 'react-router';
 import { Link, useParams } from 'react-router-dom';
 import { StyleSheet } from '../../utils/StyleSheet';
 import styled, { createGlobalStyle, css } from 'styled-components';
+import PostAuthor from './PostAuthor';
+import ReactionButton from './ReactionButton';
 
 const Button = styled.button`
   color: palevioletred;
@@ -33,6 +35,9 @@ const SinglePostPage = ({ match }: RouteComponentProps) => {
           <Link to='/'>
             <Button>Back</Button>
           </Link>
+          <Link to={`/editPost/${post.id}`}>Edit post</Link>
+          <PostAuthor userId={post.user} />
+          <ReactionButton post={post} />
         </section>
       ) : (
         <p>Post is not found</p>
